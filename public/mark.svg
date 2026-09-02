@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!--
+    A redraw, not their file: the room read as a mark. The outer ring is the
+    dais, broken at the top where the cove light runs behind the dome, and the
+    K sits on the plate.
+  -->
+  <circle cx="24" cy="24" r="21" stroke="#2b2721" stroke-width="2" stroke-dasharray="104 28" transform="rotate(-104 24 24)"/>
+  <circle cx="24" cy="24" r="15.5" stroke="#b99065" stroke-width="1.4" opacity="0.9"/>
+  <path d="M18 14v20M18 24l9-10M18 24l10 10" stroke="#2b2721" stroke-width="2.6" stroke-linecap="square"/>
+  <circle cx="24" cy="3" r="2.2" fill="#b99065"/>
+</svg>

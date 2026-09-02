@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@theme {
+  /*
+   * K.auto's showroom is a circle: a turning dais under a domed ceiling with a
+   * cove light running the rim. Everything here is measured off that room in
+   * their own frames.
+   *
+   *   dome plaster  (202,188,190) — a warm grey with a pink cast, lifted to a
+   *                 page ground. The first pink-tinted ground in the set.
+   *   wall          ( 92, 83, 66) — the olive-brown of the showroom wall
+   *   dais floor    (132,101, 93)
+   *   cove light    (185,144,101) — the rim light, kept to fills and glows
+   *   campaign blue ( 28, 94,147) — from their own artwork, deepened for text
+   *
+   * The gold is a *rim light*, never a field and never an identity: a page of
+   * gold-on-black belongs to site 02, and this room is bright anyway.
+   */
+  --color-dome: #e4dbd9; /* page ground */
+  --color-dome-2: #d5c9c7; /* raised surface */
+  --color-dome-3: #c3b5b3; /* rules only — never text */
+  --color-wall: #2b2721; /* 10.9:1 on dome */
+  --color-wall-2: #5c5342; /* 5.6:1 on dome, 4.7:1 on dome-2 */
+  --color-cove: #b99065; /* the rim light — fills, arcs, glows */
+  --color-cove-ink: #6b4e28; /* 5.6:1 on dome — the readable version */
+  --color-signal: #175383; /* their campaign blue: 5.9:1 on dome */
+
+  --font-display: var(--font-dm-serif), Georgia, serif;
+  --font-body: var(--font-dm-sans), system-ui, sans-serif;
+  --font-arabic-display: var(--font-scheherazade), "Times New Roman", serif;
+  --font-arabic-body: var(--font-markazi), system-ui, sans-serif;
+
+  --text-hero: clamp(2.4rem, 6.4vw, 5.4rem);
+  --text-display: clamp(1.7rem, 3.6vw, 3rem);
+  --text-lead: clamp(1rem, 1.1vw, 1.14rem);
+
+  /* Long, even, never-quite-stopping. A turntable has no accents. */
+  --ease-round: cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+@layer base {
+  section[id] { scroll-margin-top: 5.5rem; }
+
+  html {
+    background: var(--color-dome);
+    color: var(--color-wall);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: auto;
+  }
+
+  body { font-family: var(--font-body); overflow-x: hidden; }
+  html[dir="rtl"] body { font-family: var(--font-arabic-body); }
+
+  ::selection { background: var(--color-cove); color: var(--color-wall); }
+  :focus-visible { outline: 2px solid var(--color-cove-ink); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility font-display { font-family: var(--font-display); }
+html[dir="rtl"] .font-display { font-family: var(--font-arabic-display); }
+
+@utility label {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.66rem;
+  font-weight: 500;
+}
+/* Scheherazade is a text naskh — at label size it goes thin and grey, so the
+   Arabic body face carries the labels instead. */
+html[dir="rtl"] .label {
+  font-family: var(--font-arabic-body);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.86rem;
+}
+
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ---------------------------------------------------------------------------
+ * Motion signature: the round.
+ *
+ * Every other site in this set arrives — things strike, drop, sweep, unveil,
+ * roll. Nothing arrives in a rotunda. A car on a turning plate is simply not
+ * facing you, and then it is, and the change has no beginning. So this is the
+ * one page in the set whose reveal is a long plain dissolve with zero travel,
+ * and whose only perpetual motion is a rim arc that never stops turning.
+ * ------------------------------------------------------------------------ */
+
+@keyframes come-round {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes rim-turn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes come-round { from { opacity: 1; } to { opacity: 1; } }
+  @keyframes rim-turn { from { transform: none; } to { transform: none; } }
+}
+
+/* Driven by a data attribute the observer writes. Unlayered so a Tailwind
+   opacity utility cannot outrank the resting state. */
+[data-round] { opacity: 0; }
+[data-round][data-seen] {
+  animation: come-round 900ms var(--ease-round) var(--round-delay, 0ms) both;
+}
+
+/* The rim arc on every section header. It turns whether or not you are
+   looking at it, which is the point. */
+.rim {
+  animation: rim-turn 26s linear infinite;
+}
+.rim-slow { animation: rim-turn 62s linear infinite reverse; }
+
+/* ---------------------------------------------------------------------------
+ * Arabic corrections. Keyed off [dir], never [lang] — browser translation
+ * rewrites lang. Unlayered so they outrank Tailwind utilities.
+ * ------------------------------------------------------------------------ */
+
+html[dir="ltr"] .text-hero { line-height: 1.02; }
+/* Scheherazade sets optically small with long descenders and high diacritics,
+   so the Arabic runs larger and much looser than the Latin. */
+html[dir="rtl"] .text-hero {
+  font-size: clamp(2.4rem, 6.6vw, 5.6rem);
+  font-weight: 700;
+  line-height: 1.5;
+  padding-top: 0.06em;
+}
+html[dir="ltr"] .text-display { line-height: 1.08; }
+html[dir="rtl"] .text-display {
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.55;
+}
+html[dir="rtl"] .font-display { font-weight: 700; }
+
+/* Markazi sets small for its em, so the Arabic body copy runs a size up and
+   with more leading than the Latin. */
+html[dir="rtl"] .text-lead {
+  font-size: clamp(1.16rem, 1.35vw, 1.32rem);
+  line-height: 1.95;
+}
+
+/* The smallest text on the page — annotations, notes, the disclaimer. Below
+   about 0.8rem Markazi stops being readable at all. */
+.fine { font-size: 0.76rem; line-height: 1.6; }
+html[dir="rtl"] .fine { font-size: 0.88rem; line-height: 1.75; }
+
+html[dir="rtl"] [class*="tracking-["],
+html[dir="rtl"] .tracking-widest,
+html[dir="rtl"] .tracking-wider { letter-spacing: 0; }
+
+/* Marque names, model codes and figures stay Latin and LTR inside Arabic
+   copy — "X5 M60i" must not reorder. */
+.latin {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: var(--font-body);
+}
+html[dir="rtl"] .latin { text-align: right; }
