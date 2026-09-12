@@ -110,9 +110,7 @@ export const en: KAutoContent = {
   },
 
   footer: {
-    disclaimer:
-      "A concept design, built as a demonstration. Not an official K.auto site, and not affiliated with them. All photography, marks and quoted copy belong to K.auto.",
-    rights: "Concept by Claude",
+    rights: "© K.auto. All rights reserved.",
   },
 
   a11y: {

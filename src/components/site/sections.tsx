@@ -626,9 +626,6 @@ export function Footer() {
           <span className="latin font-display text-[0.98rem] text-wall">K.auto</span>
           <span className="text-[0.8rem] text-wall-2">{c.brand.tagline}</span>
         </div>
-        <p className="fine max-w-[62ch] text-wall-2">
-          {c.footer.disclaimer}
-        </p>
         <p className="fine text-wall-2">{c.footer.rights}</p>
       </div>
     </footer>
